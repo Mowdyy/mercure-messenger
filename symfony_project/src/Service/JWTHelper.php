@@ -17,6 +17,7 @@ class JWTHelper
 
     public function createJWT(User $user): string
     {
+        //Subscriber 
         $payload = ["mercure" => [
             "subscribe" => ["https://example.com/user/{$user->getId()}/{?topic}"],
             "payload" => [
