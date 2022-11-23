@@ -3,22 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Service\CookieHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PingController extends AbstractController
+class ChatController extends AbstractController
 {
-    #[Route('/ping/{user}', name: 'ping_user', methods: 'POST')]
-    public function pingUser(User $user, HubInterface $hub)
+
+    #[Route('/message/{user}', name: 'message_user', methods: 'POST')]
+    public function chat(User $user, HubInterface $hub)
     {
-        //Publisher - Publication
+        //Publisher - Publication d'un chat
         $update = new Update(
             [
-                "https://example.com/my-private-topic",
-                "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/my-private-topic")
+                "https://example.com/message-topic",
+                "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/message-topic")
             ],
             json_encode([
                 'user' => $user->getUsername(),
