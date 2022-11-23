@@ -1,12 +1,8 @@
 mercure:
-  hubs:
-    default:
-      # L’URL du hub
-      url: "%env(MERCURE_URL)%"
-      public_url: "%env(MERCURE_PUBLIC_URL)%"
-      #Json Web Token
-      jwt:
-        # La clé secrète de signature pour le JWT
-        secret: "%env(MERCURE_JWT_SECRET)%"
-        # Les topics sur lesquels on sera autorisé à publier
-        publish: "*"
+    hubs:
+        default:
+            url: '%env(MERCURE_URL)%'
+            public_url: '%env(MERCURE_PUBLIC_URL)%'
+            jwt:
+                secret: '%env(MERCURE_JWT_SECRET)%'
+                publish: '*'
