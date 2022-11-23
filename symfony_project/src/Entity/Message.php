@@ -31,6 +31,7 @@ class Message
     {
         $this->User = new ArrayCollection();
         $this->Chat_id = new ArrayCollection();
+        $this->Date = new DateTimeImmutable();
     }
 
     public function getId(): ?int
