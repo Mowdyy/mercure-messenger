@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ChatController extends AbstractController
 {
 
-
     #[Route('/message/{user}', name: 'message_user', methods: 'POST')]
     public function chat(User $user, HubInterface $hub)
     {
