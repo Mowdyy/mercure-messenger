@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\User;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,7 +28,8 @@ class ChatController extends AbstractController
                 'id' => $user->getId()
             ]),
             true
-            
+        );
+    }  
     #[Route('/messages', name: 'messages', methods: 'GET')]
     public function getAllMessages(MessageRepository $messageRepository): JsonResponse
     {   
@@ -49,8 +51,7 @@ class ChatController extends AbstractController
         return $this->json([
             'message' => 'Ping sent'
         ]);
-    }
-}
+        
         $this->json($newMessage);
         return $this->redirectToRoute('messages');
     }
