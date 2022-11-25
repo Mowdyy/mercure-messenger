@@ -76,4 +76,4 @@ class ChatController extends AbstractController
     }
      
     }
-}
+
