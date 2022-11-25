@@ -32,9 +32,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: ChatsRoom::class, inversedBy: 'users')]
     private $ChatRooms;
 
-    #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'user')]
-    private $message;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Message::class)]
     private $messages;
 
