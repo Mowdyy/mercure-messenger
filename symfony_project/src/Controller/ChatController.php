@@ -39,6 +39,8 @@ class ChatController extends AbstractController
     public function sendPrivateMessage(User $user , HubInterface $hub, $message)
     {
         $newMessage = new Message();
+        // $newMessage->setContent($message)
+        //             ->setUser
         $update = new Update(
             ["https://example.com/my-private-topic", 
             "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/my-private-topic")], 

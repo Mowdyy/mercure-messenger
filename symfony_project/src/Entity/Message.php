@@ -21,17 +21,18 @@ class Message
     #[ORM\Column(type: 'text')]
     private $Content;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'messages')]
-    private $User;
-
     #[ORM\ManyToMany(targetEntity: ChatsRoom::class, inversedBy: 'messages')]
     private $Chat_id;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'messages')]
+    private $user;
 
     public function __construct()
     {
         $this->User = new ArrayCollection();
         $this->Chat_id = new ArrayCollection();
         $this->Date = new \DateTimeImmutable();
+        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,30 +65,6 @@ class Message
     }
 
     /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
-    {
-        return $this->User;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->User->contains($user)) {
-            $this->User[] = $user;
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        $this->User->removeElement($user);
-
-        return $this;
-    }
-
-    /**
      * @return Collection|ChatsRoom[]
      */
     public function getChatId(): Collection
@@ -110,4 +87,18 @@ class Message
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
 }
