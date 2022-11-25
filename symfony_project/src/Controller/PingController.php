@@ -14,6 +14,7 @@ class PingController extends AbstractController
     #[Route('/ping/{user}', name: 'ping_user', methods: 'POST')]
     public function pingUser(User $user, HubInterface $hub)
     {
+        //Publisher - Publication
         $update = new Update(
             [
                 "https://example.com/my-private-topic",

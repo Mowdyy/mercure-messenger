@@ -13,6 +13,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ChatController extends AbstractController
 {
+
+
+    #[Route('/message/{user}', name: 'message_user', methods: 'POST')]
+    public function chat(User $user, HubInterface $hub)
+    {
+        //Publisher - Publication d'un chat
+        $update = new Update(
+            [
+                "https://example.com/message-topic",
+                "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/message-topic")
+            ],
+            json_encode([
+                'user' => $user->getUsername(),
+                'id' => $user->getId()
+            ]),
+            true
+        );
+    }  
     #[Route('/messages', name: 'messages', methods: 'GET')]
     public function getAllMessages(MessageRepository $messageRepository): JsonResponse
     {   
@@ -30,7 +48,6 @@ class ChatController extends AbstractController
         );
 
         $hub->publish($update);
-
         $this->json($newMessage);
         return $this->redirectToRoute('messages');
     }
@@ -56,5 +73,7 @@ class ChatController extends AbstractController
         $hub->publish($update);
 
         return $this->json(['message' => sprintf('%s sent', $message)]);
+    }
+     
     }
 }
