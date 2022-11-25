@@ -29,12 +29,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
-    #[ORM\ManyToMany(targetEntity: Message::class, mappedBy: 'User')]
+    #[ORM\ManyToMany(targetEntity: ChatsRoom::class, inversedBy: 'users')]
+    private $ChatRooms;
+
+    #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'user')]
+    private $message;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Message::class)]
     private $messages;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->ChatRooms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,6 +137,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->messages->removeElement($message)) {
             $message->removeUser($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChatsRoom[]
+     */
+    public function getChatRooms(): Collection
+    {
+        return $this->ChatRooms;
+    }
+
+    public function addChatRoom(ChatsRoom $chatRoom): self
+    {
+        if (!$this->ChatRooms->contains($chatRoom)) {
+            $this->ChatRooms[] = $chatRoom;
+        }
+
+        return $this;
+    }
+
+    public function removeChatRoom(ChatsRoom $chatRoom): self
+    {
+        $this->ChatRooms->removeElement($chatRoom);
 
         return $this;
     }

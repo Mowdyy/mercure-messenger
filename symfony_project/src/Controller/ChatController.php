@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ChatController extends AbstractController
 {
 
+
     #[Route('/message/{user}', name: 'message_user', methods: 'POST')]
     public function chat(User $user, HubInterface $hub)
     {
@@ -47,12 +48,32 @@ class ChatController extends AbstractController
         );
 
         $hub->publish($update);
-
-        return $this->json([
-            'message' => 'Ping sent'
-        ]);
-        
         $this->json($newMessage);
         return $this->redirectToRoute('messages');
+    }
+
+    #[Route('/messages/add/{user}/{message}', name : 'private-messages-add', methods : 'POST')]
+    public function sendPrivateMessage(User $user , HubInterface $hub, $message)
+    {
+        $newMessage = new Message();
+        // $newMessage->setContent($message)
+        //             ->setUser
+        $update = new Update(
+            ["https://example.com/my-private-topic", 
+            "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/my-private-topic")], 
+            json_encode([
+                'message' => \urldecode($message),
+                'sender' => $user
+            ]),
+            true
+        );
+
+    
+
+        $hub->publish($update);
+
+        return $this->json(['message' => sprintf('%s sent', $message)]);
+    }
+     
     }
 }

@@ -21,9 +21,13 @@ class ChatsRoom
     #[ORM\ManyToMany(targetEntity: Message::class, mappedBy: 'Chat_id')]
     private $messages;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'ChatRooms')]
+    private $users;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,6 +69,33 @@ class ChatsRoom
     {
         if ($this->messages->removeElement($message)) {
             $message->removeChatId($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addChatRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeChatRoom($this);
         }
 
         return $this;
