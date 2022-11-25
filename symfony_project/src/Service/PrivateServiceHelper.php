@@ -9,7 +9,7 @@ class PrivateTopicHelper{
         $order = [$userId1, $userid2];
         sort($order);
 
-        return sprintf('%d.%d', order[0], $order[0]);
+        return sprintf('%d.%d', $order[0], $order[1]);
     }
 
     public function getUserFromChatTopic(string $chatTopic){

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\User;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,5 +33,26 @@ class ChatController extends AbstractController
 
         $this->json($newMessage);
         return $this->redirectToRoute('messages');
+    }
+
+    #[Route('/messages/add/{user}/{message}', name : 'private-messages-add', methods : 'POST')]
+    public function sendPrivateMessage(User $user , HubInterface $hub, $message)
+    {
+        $newMessage = new Message();
+        $update = new Update(
+            ["https://example.com/my-private-topic", 
+            "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/my-private-topic")], 
+            json_encode([
+                'message' => \urldecode($message),
+                'sender' => $user
+            ]),
+            true
+        );
+
+    
+
+        $hub->publish($update);
+
+        return $this->json(['message' => sprintf('%s sent', $message)]);
     }
 }
