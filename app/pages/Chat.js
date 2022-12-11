@@ -6,7 +6,7 @@ import Bubble from '../components/Bubble';
 const Chat = () => {
 
   return (
-      <View>
+      <View style={styles.container}>
         <View>
             <Bubble owner text="Slt" />
             <Bubble owner text="Ca dit quoi ?" />
@@ -23,6 +23,13 @@ const Chat = () => {
 export default Chat;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+    justifyContent: 'flex-end',
+    height: 100,
+  },
   submit: {
     marginBottom: 0
   }

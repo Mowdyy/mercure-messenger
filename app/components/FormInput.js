@@ -17,7 +17,6 @@ export default function FormInput() {
 const styles = StyleSheet.create({
   input: {
     marginTop: 10,
-    marginBottom: 20,
     width: width / 1.1,
     height: height / 15,
     backgroundColor: '#eee',
