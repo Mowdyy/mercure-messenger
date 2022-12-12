@@ -2,23 +2,27 @@
 
 namespace App\Entity;
 
-use App\Repository\ChatsRoomRepository;
+use App\Repository\ChannelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ChatsRoomRepository::class)]
-class ChatsRoom
+#[ORM\Entity(repositoryClass: ChannelRepository::class)]
+class Channel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups('main')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $Topic;
+    #[Groups('main')]
+    private $name;
 
-    #[ORM\ManyToMany(targetEntity: Message::class, mappedBy: 'Chat_id')]
+    #[ORM\OneToMany(mappedBy: 'channel', targetEntity: message::class, orphanRemoval: true)]
+    #[Groups('main')]
     private $messages;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'ChatRooms')]
@@ -35,40 +39,43 @@ class ChatsRoom
         return $this->id;
     }
 
-    public function getTopic(): ?string
+    public function getName(): ?string
     {
-        return $this->Topic;
+        return $this->name;
     }
 
-    public function setTopic(string $Topic): self
+    public function setName(string $name): self
     {
-        $this->Topic = $Topic;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * @return Collection|Message[]
+     * @return Collection|message[]
      */
     public function getMessages(): Collection
     {
         return $this->messages;
     }
 
-    public function addMessage(Message $message): self
+    public function addMessage(message $message): self
     {
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
-            $message->addChatId($this);
+            $message->setChannel($this);
         }
 
         return $this;
     }
 
-    public function removeMessage(Message $message): self
+    public function removeMessage(message $message): self
     {
         if ($this->messages->removeElement($message)) {
-            $message->removeChatId($this);
+            // set the owning side to null (unless already changed)
+            if ($message->getChannel() === $this) {
+                $message->setChannel(null);
+            }
         }
 
         return $this;

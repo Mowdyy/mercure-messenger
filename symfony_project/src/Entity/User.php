@@ -123,7 +123,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
-            $message->addUser($this);
+            $message->setUser($this);
         }
 
         return $this;
@@ -132,7 +132,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeMessage(Message $message): self
     {
         if ($this->messages->removeElement($message)) {
-            $message->removeUser($this);
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
         }
 
         return $this;

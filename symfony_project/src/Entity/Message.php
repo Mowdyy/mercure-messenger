@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
@@ -14,13 +15,16 @@ class Message
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups('message')]
     private $id;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private $Date;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups('message')]
+    private $content;
 
-    #[ORM\Column(type: 'text')]
-    private $Content;
+    #[Groups('message')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $createAt;
 
     #[ORM\ManyToMany(targetEntity: ChatsRoom::class, inversedBy: 'messages')]
     private $Chat_id;
@@ -41,26 +45,14 @@ class Message
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeImmutable
-    {
-        return $this->Date;
-    }
-
-    public function setDate(\DateTimeImmutable $Date): self
-    {
-        $this->Date = $Date;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
-        return $this->Content;
+        return $this->content;
     }
 
-    public function setContent(string $Content): self
+    public function setContent(?string $content): self
     {
-        $this->Content = $Content;
+        $this->content = $content;
 
         return $this;
     }
@@ -70,21 +62,12 @@ class Message
      */
     public function getChatId(): Collection
     {
-        return $this->Chat_id;
+        return $this->channel;
     }
 
-    public function addChatId(ChatsRoom $chatId): self
+    public function setChannel(?Channel $channel): self
     {
-        if (!$this->Chat_id->contains($chatId)) {
-            $this->Chat_id[] = $chatId;
-        }
-
-        return $this;
-    }
-
-    public function removeChatId(ChatsRoom $chatId): self
-    {
-        $this->Chat_id->removeElement($chatId);
+        $this->channel = $channel;
 
         return $this;
     }
