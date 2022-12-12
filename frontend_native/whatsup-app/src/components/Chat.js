@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import FormInput from '../components/FormInput';
-import Bubble from '../components/Bubble';
+import Bubble from './Bubble';
 
 const Chat = () => {
 
