@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, TextInput, Pressable, Text } from 'react-native';
+import { StyleSheet, View, Dimensions, TextInput, Text, TouchableOpacity } from 'react-native';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -7,25 +7,33 @@ export default function FormInput() {
   return (
     <View style={styles.container}>
       <TextInput
-        label='Saisissez votre message...'
         style={styles.input}
       />
+      <TouchableOpacity style={styles.button}>
+        <Text>Envoyer</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 0,
+    width: width
+  },
   input: {
-    marginTop: 10,
-    width: width / 1.1,
-    height: height / 15,
     backgroundColor: '#eee',
     borderRadius: 16,
-    padding: 10
+    padding: 10,
+    width: '70%'
   },
   button: {
     backgroundColor: '#90EE90',
     padding: 10,
-    borderRadius: 16
+    borderRadius: 16,
+    marginLeft: 10,
   }
 });
