@@ -1,12 +1,14 @@
-import { StyleSheet, Dimensions, View, Text } from 'react-native';
+import { StyleSheet, Dimensions, View, Text, Pressable } from 'react-native';
 
 const { width, height } = Dimensions.get('screen');
 
 export default function App() {
   return (
     <View style={styles.header}>
-        <Text>Retour</Text>
-        <Text>Room 1</Text>
+        <Pressable>
+            <Text>Retour</Text>
+        </Pressable>
+        <Text>Justin</Text>
     </View>
   );
 }

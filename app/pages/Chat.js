@@ -7,7 +7,7 @@ const Chat = () => {
 
   return (
       <View style={styles.container}>
-        <View>
+        <View style={styles.bubbles}>
             <Bubble owner text="Slt" />
             <Bubble owner text="Ca dit quoi ?" />
             <Bubble text="Hello, ça va et toi ?" />
@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'flex-end',
     height: 100,
+  },
+  bubbles: {
+    marginBottom: 50
   },
   submit: {
     marginBottom: 0
